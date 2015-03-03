@@ -11,11 +11,13 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient;
+import com.amazonaws.services.autoscaling.model.CreateAutoScalingGroupRequest;
 import com.amazonaws.services.autoscaling.model.CreateLaunchConfigurationRequest;
 import com.amazonaws.services.autoscaling.model.DescribeLaunchConfigurationsResult;
 import com.amazonaws.services.autoscaling.model.InstanceMonitoring;
 import com.amazonaws.services.autoscaling.model.LaunchConfiguration;
 import com.amazonaws.services.ec2.AmazonEC2Client;
+import com.amazonaws.services.ec2.model.DescribeAvailabilityZonesResult;
 import com.amazonaws.services.ec2.model.DescribeImagesRequest;
 import com.amazonaws.services.ec2.model.DescribeImagesResult;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
@@ -60,12 +62,39 @@ public class AutoScaleTest {
 		
 		System.out.println("Number of configs: " +lsConfig.size());
 		
+		
+		final DescribeAvailabilityZonesResult azResult = ec2.describeAvailabilityZones();
+		if(azResult.getAvailabilityZones().size() <= 0){
+			System.out.println("Availability zone not found");
+			return ;
+		}
+		final String availabilityZone = azResult.getAvailabilityZones().get( 0 ).getZoneName();
+		
+		// create config
+		String configName = "SriniAmiConfig3";
 		amazonAutoScalingClient.createLaunchConfiguration( new CreateLaunchConfigurationRequest()
-        .withLaunchConfigurationName( "SriniAmiConfig3" )
-        .withImageId( "ami-af50b5eb" )
+        .withLaunchConfigurationName( configName )
+        .withImageId( "ami-c530d481" )
         .withInstanceType( "t2.micro")
+        .withKeyName("srini_ubuntu1")
         .withInstanceMonitoring( new InstanceMonitoring().withEnabled( true ) ) );
 		
+		
+		// create autoscale group..
+		// Create scaling group
+		String groupName = "SriniAutoScale1";
+		amazonAutoScalingClient.createAutoScalingGroup( new CreateAutoScalingGroupRequest()
+	      .withAutoScalingGroupName( groupName )
+	      .withLaunchConfigurationName( configName )
+	      .withMinSize( 1 )
+	      .withMaxSize( 2 )
+	      .withHealthCheckGracePeriod( 300 )
+	      .withAvailabilityZones( availabilityZone )
+	    );
+		
+		
+	  
+	  
 		System.out.println("Done...");
 	}
 	

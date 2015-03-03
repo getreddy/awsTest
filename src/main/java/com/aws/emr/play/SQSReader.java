@@ -1,5 +1,6 @@
 package com.aws.emr.play;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Properties;
@@ -54,6 +55,12 @@ public class SQSReader{
 		protected void run() throws Exception {
 			
 			System.out.println("SQSReader working..");
+			File file = new File("LogFile.txt");
+			if (file.createNewFile()){
+		        System.out.println("File is created!");
+		    }else{
+		        System.out.println("File already exists.");
+		    }
 			
 			while(isRunning()){
 				ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(m_queueURL);
@@ -63,6 +70,8 @@ public class SQSReader{
 		        	Thread.sleep(5000);
 		        	continue;
 		        }
+		        
+		        System.out.println("... *** Size of messages list: " +messages.size());
 		        
 		        for (Message message : messages) {
 		            System.out.println("  Message");
