@@ -37,8 +37,11 @@ public class App extends Configured implements Tool{
     	obj.testListingS3();
     	System.out.println("Done...");*/
         
-    	AutoScaleTest autoObj = new AutoScaleTest();
-    	autoObj.testAutoScale();
+    	//AutoScaleTest autoObj = new AutoScaleTest();
+    	//autoObj.testAutoScale();
+    	
+    	SQSTest sqsObj = new SQSTest();
+    	sqsObj.testSQS();
     	
     	
     }
