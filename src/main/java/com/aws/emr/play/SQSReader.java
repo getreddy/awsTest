@@ -105,7 +105,7 @@ public class SQSReader{
 		obj.start();
 	}
 	
-	public static void main(String args[]){
+	/*public static void main(String args[]){
 		
 		String queueName = "";
 		if(args != null && args.length > 0){
@@ -116,6 +116,6 @@ public class SQSReader{
 		sqsObj.readMessages(queueName);
 		
 		System.out.println("SQS Reader Done..");
-	}
+	}*/
 	
 }

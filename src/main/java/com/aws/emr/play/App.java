@@ -37,17 +37,30 @@ public class App extends Configured implements Tool{
     	obj.testListingS3();
     	System.out.println("Done...");*/
         
-    	AutoScaleTest autoObj = new AutoScaleTest();
-    	autoObj.testAutoScale();
+    	//AutoScaleTest autoObj = new AutoScaleTest();
+    	//autoObj.testAutoScale();
     	
     	//SQSTest sqsObj = new SQSTest();
     	//sqsObj.testSQS();
     	
+    	String queueName = "";
+		if(args != null && args.length > 0){
+			queueName = args[0];
+		}
+		
+		SQSReader sqsObj = new SQSReader();
+		sqsObj.readMessages(queueName);
+    	
     	
     }
 
+	public int run(String[] arg0) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
     
-    public int run(String[] args) throws Exception {
+    /*public int run(String[] args) throws Exception {
 																																																						
 		try {
             Configuration conf = new Configuration();
@@ -80,7 +93,7 @@ public class App extends Configured implements Tool{
             return 2;
         }
 		
-	}
+	}*/
 
     
 }
