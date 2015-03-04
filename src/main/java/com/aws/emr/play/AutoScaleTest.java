@@ -91,7 +91,7 @@ public class AutoScaleTest {
 		
 		amazonAutoScalingClient.createLaunchConfiguration( new CreateLaunchConfigurationRequest()
         .withLaunchConfigurationName( configName )
-        .withImageId( "ami-d703e793" )
+        .withImageId( "ami-d70de993" )
         .withInstanceType( "t2.micro")
         .withUserData(new String(encoded))
         .withKeyName("srini_ubuntu1")
