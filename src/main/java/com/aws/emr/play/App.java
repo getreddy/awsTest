@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 /**
  * 
  */
-public class App extends Configured implements Tool{
+public class App {//extends Configured implements Tool{
 
     public static void main(String[] args) throws Exception {
     	

@@ -40,6 +40,13 @@
 		<version>2.6.0</version>
 	</dependency>
 	
+    <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>13.0.1</version>
+    </dependency>
+	
+	
 	<dependency>
 		<groupId>com.amazonaws</groupId>
 		<artifactId>aws-java-sdk-autoscaling</artifactId>
@@ -58,11 +65,34 @@
       <configuration>
        <archive>
          <manifest>
+           <addClasspath>true</addClasspath>
            <mainClass>com.aws.emr.play.App</mainClass>
+           <classpathPrefix>dependency-jars/</classpathPrefix>
          </manifest>
        </archive>
      </configuration>
     </plugin>
+    
+    <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-dependency-plugin</artifactId>
+	<version>2.5.1</version>
+	<executions>
+	  <execution>
+		<id>copy-dependencies</id>
+		<phase>package</phase>
+		<goals>
+		    <goal>copy-dependencies</goal>
+		</goals>
+		<configuration>
+		    <outputDirectory>
+                          ${project.build.directory}/dependency-jars/
+                    </outputDirectory>
+		</configuration>
+	    </execution>
+	</executions>
+  </plugin>
+    
    </plugins>
  </build>  
 
