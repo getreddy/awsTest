@@ -23,6 +23,7 @@ import com.amazonaws.services.ec2.model.DescribeImagesResult;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.Filter;
+import com.amazonaws.util.Base64;
 
 public class AutoScaleTest {
 
@@ -72,10 +73,27 @@ public class AutoScaleTest {
 		
 		// create config
 		String configName = "SriniAmiConfig3";
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("#!/bin/bash");
+		sb.append("\n");
+		sb.append("cd /home/ubuntu/awsT/awsTest");
+		sb.append("\n");
+		sb.append("java -jar target/cw-aws-1.0-SNAPSHOT.jar s keys/myCredentialFile Sriniqueue1 2>&1 | tee Logreader.txt &");
+		sb.append("\n");
+		sb.append("touch afterFile.txt");
+		sb.append("\n");
+		
+		System.out.println("Command: " +sb.toString());
+		
+		
+		byte[] encoded = Base64.encode(sb.toString().getBytes()); 
+		
 		amazonAutoScalingClient.createLaunchConfiguration( new CreateLaunchConfigurationRequest()
         .withLaunchConfigurationName( configName )
-        .withImageId( "ami-c530d481" )
+        .withImageId( "ami-d703e793" )
         .withInstanceType( "t2.micro")
+        .withUserData(new String(encoded))
         .withKeyName("srini_ubuntu1")
         .withInstanceMonitoring( new InstanceMonitoring().withEnabled( true ) ) );
 		

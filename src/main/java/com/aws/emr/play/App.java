@@ -45,14 +45,22 @@ public class App {//extends Configured implements Tool{
     	
     	String queueName = "";
     	String awsCredPath = "";
+    	String opt = "";
 		if(args != null && args.length > 0){
-			awsCredPath = args[0];
-			queueName = args[1];
+			opt = args[0];
+			awsCredPath = args[1];
+			queueName = args[2];
 		}
 		
-		SQSReader sqsObj = new SQSReader();
-		sqsObj.readMessages(awsCredPath, queueName);
+		if(opt.equalsIgnoreCase("s")){
+			SQSReader sqsObj = new SQSReader();
+			sqsObj.readMessages(awsCredPath, queueName);
+		}else if(opt.equalsIgnoreCase("a")){
+			AutoScaleTest autoObj = new AutoScaleTest();
+	    	autoObj.testAutoScale();
+		}
     	
+		System.out.println("Done..");
     	
     }
 

@@ -12,12 +12,14 @@ public class SQSReader{
 	/*public static void main(String args[]){
 		
 		String queueName = "";
+    	String awsCredPath = "";
 		if(args != null && args.length > 0){
-			queueName = args[0];
+			awsCredPath = args[0];
+			queueName = args[1];
 		}
 		
 		SQSReader sqsObj = new SQSReader();
-		sqsObj.readMessages(queueName);
+		sqsObj.readMessages(awsCredPath, queueName);
 		
 		System.out.println("SQS Reader Done..");
 	}*/
