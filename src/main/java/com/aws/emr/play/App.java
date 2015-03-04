@@ -44,12 +44,14 @@ public class App {//extends Configured implements Tool{
     	//sqsObj.testSQS();
     	
     	String queueName = "";
+    	String awsCredPath = "";
 		if(args != null && args.length > 0){
-			queueName = args[0];
+			awsCredPath = args[0];
+			queueName = args[1];
 		}
 		
 		SQSReader sqsObj = new SQSReader();
-		sqsObj.readMessages(queueName);
+		sqsObj.readMessages(awsCredPath, queueName);
     	
     	
     }

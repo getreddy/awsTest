@@ -4,8 +4,8 @@ package com.aws.emr.play;
 
 public class SQSReader{
 
-	public void readMessages(String queueName){
-		SQSReaderTh obj = new SQSReaderTh(queueName);
+	public void readMessages(String awsCredPath, String queueName){
+		SQSReaderTh obj = new SQSReaderTh(awsCredPath, queueName);
 		obj.start();
 	}
 	

@@ -22,10 +22,12 @@ public class SQSReaderTh extends AbstractExecutionThreadService{
 	
 	String m_queueName = "";
 	String m_queueURL = "";
+	String m_credPath = "";
 	
 	AmazonSQS m_sqs;
 	
-	public SQSReaderTh(String queueName){
+	public SQSReaderTh(String awsCredPath, String queueName){
+		m_credPath = awsCredPath;
 		m_queueName = queueName;
 	}
 
@@ -35,8 +37,9 @@ public class SQSReaderTh extends AbstractExecutionThreadService{
 		System.out.println("Startup method...");
 		
 		Properties properties = new Properties();
-		String awsKeyFile = System.getenv("AWS_CREDENTIAL_FILE");
-        properties.load(new FileInputStream(awsKeyFile));
+		//String awsKeyFile = System.getenv("AWS_CREDENTIAL_FILE");
+        //properties.load(new FileInputStream(awsKeyFile));
+		properties.load(new FileInputStream(m_credPath));
         		
         AWSCredentials creds = new BasicAWSCredentials(properties.getProperty("AWSAccessKeyId"),
 				properties.getProperty("AWSSecretKey"));
