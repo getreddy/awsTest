@@ -79,7 +79,9 @@ public class AutoScaleTest {
 		sb.append("\n");
 		sb.append("cd /home/ubuntu/awsT/awsTest");
 		sb.append("\n");
-		sb.append("java -jar target/cw-aws-1.0-SNAPSHOT.jar s keys/myCredentialFile Sriniqueue1 2>&1 | tee Logreader.txt &");
+		String part1 = "java -jar target/cw-aws-1.0-SNAPSHOT.jar s keys/myCredentialFile Sriniqueue1";
+		String part2 = part1 + " " + imageName + " 2>&1 | tee Logreader.txt &";
+		sb.append(part2);
 		sb.append("\n");
 		sb.append("touch afterFile.txt");
 		sb.append("\n");
