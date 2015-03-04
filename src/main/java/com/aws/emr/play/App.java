@@ -46,10 +46,13 @@ public class App {//extends Configured implements Tool{
     	String queueName = "";
     	String awsCredPath = "";
     	String opt = "";
+    	String imageName = "";
 		if(args != null && args.length > 0){
 			opt = args[0];
 			awsCredPath = args[1];
 			queueName = args[2];
+			imageName = args[3];
+			
 		}
 		
 		if(opt.equalsIgnoreCase("s")){
@@ -57,7 +60,7 @@ public class App {//extends Configured implements Tool{
 			sqsObj.readMessages(awsCredPath, queueName);
 		}else if(opt.equalsIgnoreCase("a")){
 			AutoScaleTest autoObj = new AutoScaleTest();
-	    	autoObj.testAutoScale();
+	    	autoObj.testAutoScale(imageName);
 		}
     	
 		System.out.println("Done..");

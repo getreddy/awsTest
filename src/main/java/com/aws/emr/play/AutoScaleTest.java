@@ -28,7 +28,7 @@ import com.amazonaws.util.Base64;
 public class AutoScaleTest {
 
 	protected Region region;
-	public void testAutoScale() throws FileNotFoundException, IOException{
+	public void testAutoScale(String imageName) throws FileNotFoundException, IOException{
 		
 		String instanceId = "Your-InstanceId";
 		String accessKey = "";
@@ -91,7 +91,7 @@ public class AutoScaleTest {
 		
 		amazonAutoScalingClient.createLaunchConfiguration( new CreateLaunchConfigurationRequest()
         .withLaunchConfigurationName( configName )
-        .withImageId( "ami-d70de993" )
+        .withImageId( imageName )
         .withInstanceType( "t2.micro")
         .withUserData(new String(encoded))
         .withKeyName("srini_ubuntu1")
