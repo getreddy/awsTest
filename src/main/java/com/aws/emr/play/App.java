@@ -34,7 +34,8 @@ public class App {//extends Configured implements Tool{
     	System.exit(res);*/
     	
     	/*S3Test obj = new S3Test();
-    	obj.testListingS3();
+    	//obj.testListingS3();
+    	obj.testFileListing();
     	System.out.println("Done...");*/
         
     	//AutoScaleTest autoObj = new AutoScaleTest();
@@ -47,21 +48,33 @@ public class App {//extends Configured implements Tool{
     	String awsCredPath = "";
     	String opt = "";
     	String imageName = "";
+    	String bucketName = "";
 		if(args != null && args.length > 0){
 			opt = args[0];
 			awsCredPath = args[1];
 			queueName = args[2];
-			imageName = args[3];
 			
+			if(opt.equalsIgnoreCase("sr")){
+				SQSReader sqsObj = new SQSReader();
+				sqsObj.readMessages(awsCredPath, queueName);
+			}else if(opt.equalsIgnoreCase("ss")){
+				SQSSender sqsObj = new SQSSender(awsCredPath, queueName);
+				
+				if(args.length > 3){
+					bucketName = args[3];
+					if(bucketName != null && !bucketName.isEmpty())
+						sqsObj.setBucketName(bucketName);
+				}
+				
+				sqsObj.start();
+			}else if(opt.equalsIgnoreCase("a")){
+				imageName = args[3];
+				AutoScaleCW autoObj = new AutoScaleCW(awsCredPath, queueName, imageName);
+		    	autoObj.testProvisioning();
+			}
 		}
-		
-		if(opt.equalsIgnoreCase("s")){
-			SQSReader sqsObj = new SQSReader();
-			sqsObj.readMessages(awsCredPath, queueName);
-		}else if(opt.equalsIgnoreCase("a")){
-			AutoScaleTest autoObj = new AutoScaleTest();
-	    	autoObj.testAutoScale(imageName);
-		}
+    	
+    	
     	
 		System.out.println("Done..");
     	

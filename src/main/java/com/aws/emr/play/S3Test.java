@@ -2,17 +2,20 @@ package com.aws.emr.play;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Properties;
 import java.util.UUID;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -87,10 +90,39 @@ public class S3Test {
         System.out.println();
     }		
 	
+    public void testFileListing() throws IOException{
+    	
+    	//filterbucket7b7532a5-2afb-4762-aa80-98732487aae5
+    	
+    	Properties properties = new Properties();
+		//String awsKeyFile = System.getenv("AWS_CREDENTIAL_FILE");
+        //properties.load(new FileInputStream(awsKeyFile));
+		properties.load(new FileInputStream("keys/myCredentialFile"));
+        		
+        AWSCredentials creds = new BasicAWSCredentials(properties.getProperty("AWSAccessKeyId"),
+				properties.getProperty("AWSSecretKey"));
+
+        AmazonS3 s3 = new AmazonS3Client(creds);
+        Region usWest1 = Region.getRegion(Regions.US_WEST_1);
+        s3.setRegion(usWest1);
+        
+        String bucketName = "filterbucket7b7532a5-2afb-4762-aa80-98732487aae5";
+        ObjectListing objectListing = s3.listObjects(new ListObjectsRequest()
+        	.withBucketName(bucketName)
+        	.withPrefix("bucket1"));
+        
+        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+        	System.out.println(" - " + objectSummary.getKey() + "  " +
+                    "(size = " + objectSummary.getSize() + ")");
+        }
+        
+        System.out.println("Done..");
+        
+    }
     
     public void testListingS3() throws IOException{
     	
-    	AWSCredentials credentials = null;
+    	/*AWSCredentials credentials = null;
         try {
             credentials = new ProfileCredentialsProvider("srinivask_profile").getCredentials();
         } catch (Exception e) {
@@ -99,9 +131,17 @@ public class S3Test {
                     "Please make sure that your credentials file is at the correct " +
                     "location (/home/srini/.aws/credentials), and is in valid format.",
                     e);
-        }
+        }*/
+    	
+		Properties properties = new Properties();
+		//String awsKeyFile = System.getenv("AWS_CREDENTIAL_FILE");
+        //properties.load(new FileInputStream(awsKeyFile));
+		properties.load(new FileInputStream("keys/myCredentialFile"));
+        		
+        AWSCredentials creds = new BasicAWSCredentials(properties.getProperty("AWSAccessKeyId"),
+				properties.getProperty("AWSSecretKey"));
 
-        AmazonS3 s3 = new AmazonS3Client(credentials);
+        AmazonS3 s3 = new AmazonS3Client(creds);
         Region usWest1 = Region.getRegion(Regions.US_WEST_1);
         s3.setRegion(usWest1);
         
